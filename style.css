@@ -288,6 +288,67 @@ header {
     transition: scale 0.3s ease, rotate 0.3s ease;
   }
 }
+
+/* gallery-carousel */
+
+.gallery-carousel {
+  display: flex;
+  background-color: var(--gray-color);
+  gap: 15px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.gallery-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.gallery-item {
+  min-width: 250px;
+  height: 180px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+.gallery-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+  transition: .3s ease;
+}
+
+.gallery-item img:hover {
+  transform: scale(1.05);
+}
+
+/* Fullscreen popup viewer */
+.popup {
+  display: flex;
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, .85);
+  justify-content: center;
+  align-items: center;
+  z-index: 999999;
+}
+
+.popup img {
+  max-width: 90%;
+  max-height: 90%;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #000;
+}
+
+/* gallery-carousel */
+
 .Contributions{
   background-color: rgb(20, 19, 33);
   /* background-image: url("iamge/projects-beta-banner-dark-fc370172a740.png");

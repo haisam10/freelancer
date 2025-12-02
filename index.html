@@ -17,7 +17,9 @@
 
   <body>
     <div class="google_translate_element" id="google_translate_element"></div>
-    <marquee>Big Achievement ZERO DAY PROJECT at " স তে সতেরো " Web Page</marquee>
+    <marquee
+      >Big Achievement ZERO DAY PROJECT at " স তে সতেরো " Web Page</marquee
+    >
     <section>
       <header class="main d-flex .fl-col j-cn al-cn">
         <div class="reveal">
@@ -176,6 +178,73 @@
         </div>
       </div>
     </section>
+    <section>
+      <div class="my_galary side-projet-area show">
+        <h1 class="reveal">My Gallery 📸</h1>
+        <p class="git-Bio">
+          A collection of my projects and achievements in web development, video
+          editing and ethical hacking.
+        </p>
+
+        <div class="gallery-carousel reveal">
+          <div class="gallery-item">
+            <img
+              src="iamge/Certified Cybersecurity Educator Professional (CCEP).png"
+              alt="Gallery Image 1"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/smuct.jpg"
+              alt="Gallery Image 2"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/undp1.jpg"
+              alt="Gallery Image 3"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/undp2.jpg"
+              alt="Gallery Image 4"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/undp3.jpg"
+              alt="Gallery Image 5"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/undp4.jpg"
+              alt="Gallery Image 6"
+              onclick="openImage(this.src)"
+            />
+          </div>
+          <div class="gallery-item">
+            <img
+              src="iamge/undp5.jpg"
+              alt="Gallery Image 6"
+              onclick="openImage(this.src)"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Popup Viewer -->
+    <div id="imagePopup" class="popup" onclick="closeImage()">
+      <img id="popupImage" />
+    </div>
+
     <section class="Contributions">
       <h1 class="reveal">My GitHub Contributions</h1>
       <p class="git-Bio">
@@ -278,9 +347,7 @@
             </ul>
           </div>
         </div>
-        <div style="margin: 20px; display: flex; flex-wrap: wrap">
-
-        </div>
+        <div style="margin: 20px; display: flex; flex-wrap: wrap"></div>
       </div>
     </section>
     <section>
@@ -363,13 +430,19 @@
       crossorigin="anonymous"
       referrerpolicy="no-referrer"
     ></script>
-<script type="text/javascript">
-function googleTranslateElementInit() {
-  new google.translate.TranslateElement({pageLanguage: 'en'}, 'google_translate_element');
-}
-</script>
+    <script type="text/javascript">
+      function googleTranslateElementInit() {
+        new google.translate.TranslateElement(
+          { pageLanguage: "en" },
+          "google_translate_element"
+        );
+      }
+    </script>
 
-<script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+    <script
+      type="text/javascript"
+      src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"
+    ></script>
     <script src="script.js"></script>
   </body>
 </html>
