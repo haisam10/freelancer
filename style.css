@@ -318,7 +318,7 @@ header {
   object-fit: cover;
   cursor: pointer;
   transition: .3s ease;
-  /* filter: grayscale(); */
+  filter: grayscale();
 }
 
 /* Fullscreen popup viewer */
@@ -569,3 +569,4 @@ ul {
   padding: 100px 20px;
   text-align: center;
 } */
+
