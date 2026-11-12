@@ -1,0 +1,226 @@
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
+import Reveal, { SectionTag } from "./Reveal";
+
+const galleryImages = import.meta.glob<string>("../images/*", {
+  eager: true,
+  query: "?url",
+  import: "default",
+});
+
+const imageUrl = (filename: string) => {
+  const url = galleryImages[`../images/${filename}`];
+  if (!url) throw new Error(`Gallery image not found: ${filename}`);
+  return url;
+};
+
+const items = [
+  { src: imageUrl("Data Analysis CERTIFICATE.png"), caption: "Data Analysis Certificate" },
+  { src: imageUrl("Certified Cybersecurity Educator Professional (CCEP).png"), caption: "CCEP — Certified Cybersecurity Educator" },
+  { src: imageUrl("10-minute-school.png"), caption: "10 Minute School" },
+  { src: imageUrl("hp-life-cy.png"), caption: "HP Life — Cybersecurity" },
+  { src: imageUrl("AV-EDR.png"), caption: "AV/EDR Evasion Practical Techniques" },
+  { src: imageUrl("PT-ACA.png"), caption: "Active Directory and AzureAD v1" },
+  { src: imageUrl("JDE-Certificate.png"), caption: "JDE Certificate" },
+  { src: imageUrl("smuct.jpg"), caption: "SMUCT — event participation" },
+  { src: imageUrl("undp1.jpg"), caption: "UNDP youth engagement" },
+  { src: imageUrl("gdg1.jpg"), caption: "Google Developer Group" },
+  { src: imageUrl("gdg2.jpg"), caption: "Google Developer Group" },
+  { src: imageUrl("Angie.png"), caption: "Client — Angie" },
+  { src: imageUrl("robart lee.png"), caption: "Client — Robert Lee" },
+  { src: imageUrl("Md. Faizur Akash.png"), caption: "Client — Md. Faizur Akash" },
+];
+
+export default function Gallery() {
+  const trackRef = useRef<HTMLDivElement>(null);
+  const firstSetRef = useRef<HTMLDivElement>(null);
+  const autoScrollPaused = useRef(false);
+  const drag = useRef({ down: false, startX: 0, startScroll: 0, moved: false });
+  const [idx, setIdx] = useState<number | null>(null);
+
+  const onPointerDown = (e: React.PointerEvent) => {
+    const el = trackRef.current;
+    if (!el) return;
+    drag.current = { down: true, startX: e.clientX, startScroll: el.scrollLeft, moved: false };
+  };
+  const onPointerMove = (e: React.PointerEvent) => {
+    const el = trackRef.current;
+    if (!el || !drag.current.down) return;
+    const dx = e.clientX - drag.current.startX;
+    if (Math.abs(dx) > 6) drag.current.moved = true;
+    el.scrollLeft = drag.current.startScroll - dx;
+  };
+  const onPointerUp = () => {
+    drag.current.down = false;
+    window.setTimeout(() => (drag.current.moved = false), 60);
+  };
+
+  useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    let frame = 0;
+    let previousTime = 0;
+    const scroll = (time: number) => {
+      const track = trackRef.current;
+      const firstSet = firstSetRef.current;
+      if (track && firstSet && !drag.current.down && !autoScrollPaused.current && idx === null) {
+        if (previousTime) track.scrollLeft += (time - previousTime) * 0.025;
+        if (track.scrollLeft >= firstSet.offsetWidth) track.scrollLeft -= firstSet.offsetWidth;
+      }
+      previousTime = time;
+      frame = requestAnimationFrame(scroll);
+    };
+
+    frame = requestAnimationFrame(scroll);
+    return () => cancelAnimationFrame(frame);
+  }, [idx]);
+
+  useEffect(() => {
+    if (idx === null) return;
+    const h = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setIdx(null);
+      if (e.key === "ArrowRight") setIdx((i) => (i! + 1) % items.length);
+      if (e.key === "ArrowLeft") setIdx((i) => (i! - 1 + items.length) % items.length);
+    };
+    window.addEventListener("keydown", h);
+    document.body.style.overflow = "hidden";
+    return () => {
+      window.removeEventListener("keydown", h);
+      document.body.style.overflow = "";
+    };
+  }, [idx]);
+
+  return (
+    <section id="gallery" className="overflow-hidden bg-white pb-24 md:pb-36">
+      <div className="mx-auto max-w-7xl px-5 md:px-8">
+        <Reveal>
+          <SectionTag index="06" label="Gallery & certificates" />
+        </Reveal>
+        <div className="mt-8 flex flex-wrap items-end justify-between gap-6">
+          <Reveal delay={0.1}>
+            <h2 className="font-display text-[clamp(2.4rem,7vw,6rem)] uppercase leading-[0.9]">
+              My <span className="text-red">gallery</span>
+            </h2>
+          </Reveal>
+          <Reveal delay={0.2}>
+            <p className="max-w-sm text-ink/60">
+              A collection of projects, certificates and achievements in web development, video
+              editing and ethical hacking. <b>Drag or click to view →</b>
+            </p>
+          </Reveal>
+        </div>
+      </div>
+
+      <Reveal delay={0.15} y={60}>
+        <div
+          ref={trackRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={onPointerUp}
+          onPointerCancel={onPointerUp}
+          onPointerLeave={() => {
+            if (drag.current.down) onPointerUp();
+          }}
+          onMouseEnter={() => (autoScrollPaused.current = true)}
+          onMouseLeave={() => (autoScrollPaused.current = false)}
+          className="no-scrollbar mt-12 flex cursor-grab overflow-x-auto px-5 pb-4 active:cursor-grabbing md:px-8"
+        >
+          {[0, 1].map((setIndex) => (
+            <div
+              key={setIndex}
+              ref={setIndex === 0 ? firstSetRef : undefined}
+              aria-hidden={setIndex === 1}
+              className="flex shrink-0 gap-6 pr-6"
+            >
+              {items.map((it, i) => (
+                <button
+                  key={it.src}
+                  tabIndex={setIndex === 1 ? -1 : undefined}
+                  onClick={() => {
+                    if (!drag.current.moved) setIdx(i);
+                  }}
+                  data-cursor-label="View"
+                  className="group relative w-[270px] shrink-0 text-left md:w-[340px]"
+                >
+                  <div className="overflow-hidden rounded-3xl border-2 border-ink/10 transition-colors duration-300 group-hover:border-red">
+                    <img
+                      src={it.src}
+                      alt={it.caption}
+                      loading="lazy"
+                      draggable={false}
+                      className="h-72 w-full object-cover transition-transform duration-700 group-hover:scale-110 md:h-80"
+                    />
+                    <div className="absolute inset-0 bg-red/0 transition-colors duration-300 group-hover:bg-red/15" />
+                  </div>
+                  <p className="mt-3 px-1 text-sm font-semibold text-ink/70 transition-colors group-hover:text-red">
+                    {it.caption}
+                  </p>
+                </button>
+              ))}
+            </div>
+          ))}
+        </div>
+      </Reveal>
+
+      <AnimatePresence>
+        {idx !== null && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[9600] flex items-center justify-center bg-ink/95 p-4 backdrop-blur-sm"
+            onClick={() => setIdx(null)}
+          >
+            <button
+              aria-label="Close"
+              onClick={() => setIdx(null)}
+              className="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full bg-red text-white transition-transform hover:rotate-90"
+            >
+              <X size={22} />
+            </button>
+            <button
+              aria-label="Previous"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIdx((i) => (i! - 1 + items.length) % items.length);
+              }}
+              className="absolute left-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-red hover:border-red md:left-6"
+            >
+              <ChevronLeft size={22} />
+            </button>
+            <button
+              aria-label="Next"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIdx((i) => (i! + 1) % items.length);
+              }}
+              className="absolute right-3 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full border border-white/30 text-white transition-colors hover:bg-red hover:border-red md:right-6"
+            >
+              <ChevronRight size={22} />
+            </button>
+
+            <motion.figure
+              key={idx}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+              className="max-w-[calc(100vw-2rem)]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <img
+                src={items[idx].src}
+                alt={items[idx].caption}
+                className="max-h-[78vh] w-auto max-w-full rounded-2xl border-2 border-white/20 object-contain shadow-2xl"
+              />
+              <figcaption className="mt-4 text-center font-display text-sm uppercase tracking-widest text-white/80">
+                {items[idx].caption} <span className="text-red">— {idx + 1}/{items.length}</span>
+              </figcaption>
+            </motion.figure>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </section>
+  );
+}
