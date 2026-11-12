@@ -1,0 +1,106 @@
+@import url("https://fonts.googleapis.com/css2?family=Anton&family=Archivo+Black&family=Space+Grotesk:wght@300;400;500;600;700&family=Noto+Sans+Bengali:wght@400;500;600;700;800&display=swap");
+@import "tailwindcss";
+
+@theme {
+  --color-red: #d21404;
+  --color-burgundy: #800020;
+  --color-ink: #0e0e0e;
+  --font-display: "Archivo Black", "Arial Black", sans-serif;
+  --font-anton: "Anton", "Archivo Black", sans-serif;
+  --font-sans: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-bengali: "Noto Sans Bengali", sans-serif;
+
+  --animate-marquee: marquee 24s linear infinite;
+  --animate-marquee-rev: marquee 32s linear infinite reverse;
+  --animate-spin-slow: rot 14s linear infinite;
+  --animate-float: float 5s ease-in-out infinite;
+  --animate-scrollhint: scrollhint 1.6s ease-in-out infinite;
+
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  @keyframes rot {
+    to { transform: rotate(360deg); }
+  }
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-12px); }
+  }
+  @keyframes scrollhint {
+    0% { transform: translateY(-110%); }
+    100% { transform: translateY(320%); }
+  }
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: #ffffff;
+  color: var(--color-ink);
+  overflow-x: clip;
+}
+
+::selection {
+  background: #d21404;
+  color: #fff;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #fff;
+}
+::-webkit-scrollbar-thumb {
+  background: #800020;
+  border-radius: 999px;
+  border: 2px solid #fff;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  body,
+  a,
+  button,
+  [data-cursor-label] {
+    cursor: none;
+  }
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(14, 14, 14, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(14, 14, 14, 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.text-outline-ink {
+  -webkit-text-stroke: 2px #0e0e0e;
+  color: transparent;
+}
+.text-outline-white {
+  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.95);
+  color: transparent;
+}
+.text-outline-red {
+  -webkit-text-stroke: 2px #d21404;
+  color: transparent;
+}
+@media (max-width: 768px) {
+  .text-outline-ink,
+  .text-outline-white,
+  .text-outline-red {
+    -webkit-text-stroke-width: 1.3px;
+  }
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
