@@ -1,7 +1,7 @@
 import Reveal, { Counter, SectionTag, SplitWords } from "./Reveal";
 
 const stats = [
-  { to: 3, suffix: "+", label: "Years of hands-on experience" },
+  { to: 4, suffix: "+", label: "Years of hands-on experience" },
   { to: 5, suffix: "+", label: "Workplaces & happy clients" },
   { to: 4, suffix: "", label: "Open-source GitHub projects" },
   { to: 10, suffix: "+", label: "Certificates & achievements" },
